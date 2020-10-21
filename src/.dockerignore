@@ -1,7 +1,5 @@
-.idea/
-Blog.Core/obj/
 Blog.Core/bin/
-Blog.Core/package-lock.json
+Blog.Core/obj/
 Blog.Core/node_modules/
 Blog.Core/wwwroot/
 Blog.Core/piranha.db

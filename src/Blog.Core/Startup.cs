@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Piranha;
+using Piranha.AspNetCore.Identity.MySQL;
 using Piranha.AttributeBuilder;
-using Piranha.AspNetCore.Identity.SQLite;
-using Piranha.Data.EF.SQLite;
+using Piranha.Data.EF.MySql;
 using Piranha.Manager.Editor;
 
 namespace Blog.Core
@@ -39,20 +39,10 @@ namespace Blog.Core
                 options.UseManager();
                 options.UseTinyMCE();
                 options.UseMemoryCache();
-                options.UseEF<SQLiteDb>(db =>
-                    db.UseSqlite(_config.GetConnectionString("piranha")));
-                options.UseIdentityWithSeed<IdentitySQLiteDb>(db =>
-                    db.UseSqlite(_config.GetConnectionString("piranha")));
-
-                /***
-                 * Here you can configure the different permissions
-                 * that you want to use for securing content in the
-                 * application.
-                options.UseSecurity(o =>
-                {
-                    o.UsePermission("WebUser", "Web User");
-                });
-                 */
+                options.UseEF<MySqlDb>(db =>
+                    db.UseMySql(_config.GetConnectionString("piranha")));
+                options.UseIdentityWithSeed<IdentityMySQLDb>(db =>
+                    db.UseMySql(_config.GetConnectionString("piranha")));
             });
         }
 
