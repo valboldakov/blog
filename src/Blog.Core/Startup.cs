@@ -77,7 +77,8 @@ namespace Blog.Core
             EditorConfig.FromFile("editorconfig.json");
 
             // Middleware setup
-            app.UsePiranha(options => {
+            app.UsePiranha(options =>
+            {
                 options.UseManager();
                 options.UseTinyMCE();
                 options.UseIdentity();

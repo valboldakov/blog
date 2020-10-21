@@ -1,10 +1,10 @@
 @model StandardArchive
 @{
     ViewData["Title"] = !string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title;
-    var hasImage = Model.PrimaryImage.HasValue;
 
     var posts = Model.Archive.Posts.Count;
 }
+
 @section head {
     @WebApp.MetaTags(Model)
 }

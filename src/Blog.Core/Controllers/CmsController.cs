@@ -18,6 +18,7 @@ namespace Blog.Core.Controllers
         /// Default constructor.
         /// </summary>
         /// <param name="api">The current api</param>
+        /// <param name="loader">Model loader</param>
         public CmsController(IApi api, IModelLoader loader)
         {
             _api = api;
@@ -85,8 +86,9 @@ namespace Blog.Core.Controllers
 
                 if (model.IsCommentsOpen)
                 {
-                    model.Comments = await _api.Posts.GetAllCommentsAsync(model.Id, true);
+                    model.Comments = await _api.Posts.GetAllCommentsAsync(model.Id);
                 }
+
                 return View(model);
             }
             catch
@@ -98,7 +100,6 @@ namespace Blog.Core.Controllers
         /// <summary>
         /// Saves the given comment and then redirects to the post.
         /// </summary>
-        /// <param name="id">The unique post id</param>
         /// <param name="commentModel">The comment model</param>
         [HttpPost]
         [Route("post/comment")]
@@ -112,7 +113,9 @@ namespace Blog.Core.Controllers
                 var comment = new Comment
                 {
                     IpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
-                    UserAgent = Request.Headers.ContainsKey("User-Agent") ? Request.Headers["User-Agent"].ToString() : "",
+                    UserAgent = Request.Headers.ContainsKey("User-Agent")
+                        ? Request.Headers["User-Agent"].ToString()
+                        : "",
                     Author = commentModel.CommentAuthor,
                     Email = commentModel.CommentEmail,
                     Url = commentModel.CommentUrl,

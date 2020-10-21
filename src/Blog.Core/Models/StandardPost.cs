@@ -5,7 +5,7 @@ using Piranha.Models;
 namespace Blog.Core.Models
 {
     [PostType(Title = "Standard post")]
-    public class StandardPost  : Post<StandardPost>
+    public class StandardPost : Post<StandardPost>
     {
         /// <summary>
         /// Gets/sets the available comments if these

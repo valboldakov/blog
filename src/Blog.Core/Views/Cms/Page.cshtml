@@ -1,8 +1,8 @@
 @model StandardPage
 @{
     ViewData["Title"] = !string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title;
-    var hasImage = Model.PrimaryImage.HasValue;
 }
+
 @section head {
     @WebApp.MetaTags(Model)
 }
