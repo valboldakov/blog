@@ -1,0 +1,21 @@
+name: Build Docker Image
+on: [push]
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build Docker Image
+        working-directory: ./src
+        run: docker build .
+  push:
+    runs-on: self-hosted
+    if: ${{ github.event_name == 'release' }}
+    steps:
+      - name: Login to Docker Package Registry
+        run: echo ${{ secrets.PAT }} | docker login -u valboldakov --password-stdin docker.pkg.github.com
+      - name: Build Tagged Image
+        run: docker build -t docker.pkg.github.com/valboldakov/blog/blog:$GITHUB_REF
+      - name: Push Image
+        run: docker push docker.pkg.github.com/valboldakov/blog/blog:$GITHUB_REF
