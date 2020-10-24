@@ -11,11 +11,15 @@ jobs:
         run: docker build .
   push:
     runs-on: self-hosted
-    if: ${{ github.event_name == 'release' }}
+    needs: [build]
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     steps:
       - name: Login to Docker Package Registry
         run: echo ${{ secrets.PAT }} | docker login -u valboldakov --password-stdin docker.pkg.github.com
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Build Tagged Image
-        run: docker build -t docker.pkg.github.com/valboldakov/blog/blog:$GITHUB_REF
+        working-directory: ./src
+        run: docker build -t docker.pkg.github.com/valboldakov/blog/blog:${GITHUB_REF#refs/tags/} .
       - name: Push Image
-        run: docker push docker.pkg.github.com/valboldakov/blog/blog:$GITHUB_REF
+        run: docker push docker.pkg.github.com/valboldakov/blog/blog:${GITHUB_REF#refs/tags/}
