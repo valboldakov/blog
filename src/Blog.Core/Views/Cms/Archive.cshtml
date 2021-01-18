@@ -53,12 +53,6 @@
                                             Published @post.Published.Value.ToShortDateString()
                                         </span>
                                     }
-                                    @if (post.EnableComments && post.CommentCount > 0)
-                                    {
-                                        <span>
-                                            <a href="@post.Permalink#comments">@post.CommentCount @(post.CommentCount == 1 ? "comment" : "comments")</a>
-                                        </span>
-                                    }
                                 </p>
                                 <p>@Html.Raw(post.Excerpt)</p>
                                 <a href="@post.Permalink" class="btn btn-primary">Read more</a>

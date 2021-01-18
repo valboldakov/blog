@@ -30,12 +30,6 @@
                     Published @Model.Published?.ToShortDateString()
                 </span>
             }
-            @if (Model.EnableComments && Model.CommentCount > 0)
-            {
-                <span>
-                    <a href="#comments">@Model.CommentCount @(Model.CommentCount == 1 ? "comment" : "comments")</a>
-                </span>
-            }
         </p>
         @if (!string.IsNullOrWhiteSpace(Model.Excerpt))
         {
@@ -62,38 +56,20 @@
         <div id="comments" class="container comments">
             @if (Model.IsCommentsOpen)
             {
-                <div class="alert alert-comment mt-2 mb-5">
-                    <form action="@Model.Permalink/comment" method="post">
-                        @Html.AntiForgeryToken()
-                        @Html.Hidden("Id", Model.Id)
-
-                        <h3 class="mb-3">Leave a comment</h3>
-                        <p class="mb-4">
-                            Please note that we won't show your email to others, or use it for sending
-                            unwanted emails. We will only use it to render your Gravatar image and to
-                            validate you as a real person.
-                        </p>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input name="CommentAuthor" type="text" class="form-control" placeholder="Your name">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <input name="CommentEmail" type="text" class="form-control" placeholder="Your email address">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <input name="CommentUrl" type="text" class="form-control" placeholder="An (optional) URL to your website">
-                        </div>
-                        <div class="form-group">
-                            <textarea name="CommentBody" rows="6" class="form-control" placeholder="Your awesome comment"></textarea>
-                        </div>
-                        <div class="form-group text-left">
-                            <button class="btn btn-success">Post Comment</button>
-                        </div>
-                    </form>
-                </div>
+                <div id="disqus_thread"></div>
+                <script>
+                    var disqus_config = function () {
+                    this.page.url = '@WebApp.AbsoluteUrl(Model)';
+                    this.page.identifier = '@Model.Id';
+                    };
+                    (function() { // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://valboldakov.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
             }
             @Html.DisplayFor(m => m.Comments)
         </div>
